@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="phase-work">
+
+  <!-- ヘッダー -->
+  <header class="app-header">
+    <h1 class="app-title">&#127813; Pomodoro Timer</h1>
+    <button class="icon-btn" id="btn-settings" aria-label="設定を開く">&#9881;</button>
+  </header>
+
+  <!-- メインカード -->
+  <main class="app-main">
+
+    <!-- フェーズタブ -->
+    <nav class="phase-tabs" role="tablist" aria-label="タイマーフェーズ">
+      <button class="tab active" data-phase="work"        role="tab">Pomodoro</button>
+      <button class="tab"        data-phase="short_break" role="tab">Short Break</button>
+      <button class="tab"        data-phase="long_break"  role="tab">Long Break</button>
+    </nav>
+
+    <!-- 進捗リング＋残り時間 -->
+    <div class="timer-wrapper">
+      <svg class="progress-ring" viewBox="0 0 240 240" aria-hidden="true">
+        <circle class="ring-bg"   cx="120" cy="120" r="108"/>
+        <circle class="ring-fill" cx="120" cy="120" r="108" id="ring-fill"/>
+      </svg>
+      <div class="timer-inner">
+        <div class="timer-display" id="timer-display">25:00</div>
+        <div class="timer-phase"   id="timer-phase">作業中</div>
+      </div>
+    </div>
+
+    <!-- コントロールボタン -->
+    <div class="controls">
+      <button class="ctrl-icon" id="btn-reset" aria-label="リセット" title="リセット">
+        &#8635;
+      </button>
+      <button class="btn-start" id="btn-start">START</button>
+      <button class="ctrl-icon" id="btn-skip" aria-label="スキップ" title="スキップ">
+        &#9654;&#9654;
+      </button>
+    </div>
+
+    <!-- サイクルインジケーター -->
+    <div class="cycle-bar">
+      <span id="cycle-tomatoes"></span>
+      <span class="cycle-label">&#35 <span id="cycle-count">0</span> サイクル完了</span>
+    </div>
+
+  </main>
+
+  <!-- 統計パネル -->
+  <section class="stats-panel">
+    <div class="stat-item">
+      <span class="stat-value" id="stat-completed">0</span>
+      <span class="stat-label">今日の完了</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value" id="stat-total-time">0m</span>
+      <span class="stat-label">累計作業時間</span>
+    </div>
+  </section>
+
+  <!-- 設定モーダル -->
+  <div class="modal-overlay hidden" id="settings-overlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>設定</h2>
+        <button class="icon-btn close-btn" id="btn-close-settings" aria-label="閉じる">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label>作業時間（分）<input type="number" id="s-work"   min="1" max="60" value="25"></label>
+        <label>短い休憩（分）<input type="number" id="s-short"  min="1" max="30" value="5"></label>
+        <label>長い休憩（分）<input type="number" id="s-long"   min="1" max="60" value="15"></label>
+        <label>長休憩の間隔 <input type="number" id="s-every"  min="1" max="10" value="4"></label>
+        <label class="cb-row"><input type="checkbox" id="s-auto-break"> 休憩を自動開始</label>
+        <label class="cb-row"><input type="checkbox" id="s-auto-work">  作業を自動開始</label>
+        <label class="cb-row"><input type="checkbox" id="s-mute">       サウンドをミュート</label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-save" id="btn-save-settings">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
