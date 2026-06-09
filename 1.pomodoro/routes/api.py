@@ -36,11 +36,26 @@ def update_settings():
     if not fields:
         return jsonify({"error": "No valid fields provided"}), 400
 
-    set_clause = ", ".join(f"{k} = ?" for k in fields)
-    values = list(fields.values()) + [datetime.utcnow().isoformat()]
+    values = [
+        fields.get("work_min"),
+        fields.get("short_break_min"),
+        fields.get("long_break_min"),
+        fields.get("long_break_every"),
+        fields.get("auto_start_break"),
+        fields.get("auto_start_work"),
+        datetime.utcnow().isoformat(),
+    ]
     db = get_db()
     db.execute(
-        f"UPDATE settings SET {set_clause}, updated_at = ? WHERE id = 1",
+        """UPDATE settings SET
+               work_min = COALESCE(?, work_min),
+               short_break_min = COALESCE(?, short_break_min),
+               long_break_min = COALESCE(?, long_break_min),
+               long_break_every = COALESCE(?, long_break_every),
+               auto_start_break = COALESCE(?, auto_start_break),
+               auto_start_work = COALESCE(?, auto_start_work),
+               updated_at = ?
+           WHERE id = 1""",
         values,
     )
     db.commit()
