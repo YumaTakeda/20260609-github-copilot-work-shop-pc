@@ -7,7 +7,7 @@ from app import (
 )
 
 
-class TimerSettingsTest(unittest.TestCase):
+class TestTimerSettings(unittest.TestCase):
     def test_accepts_customizable_options(self):
         settings = TimerSettings(
             work_minutes=45,
@@ -29,17 +29,21 @@ class TimerSettingsTest(unittest.TestCase):
             TimerSettings(work_minutes=20)
 
 
-class PomodoroTimerTest(unittest.TestCase):
+class TestPomodoroTimer(unittest.TestCase):
     def test_switches_between_work_and_break_with_selected_durations(self):
         settings = TimerSettings(work_minutes=15, break_minutes=10)
         timer = PomodoroTimer(settings)
 
-        timer.remaining_seconds = 1
+        for _ in range((15 * 60) - 1):
+            phase = timer.tick()
+            self.assertIsNone(phase)
         phase = timer.tick()
         self.assertEqual(phase, "break")
         self.assertEqual(timer.remaining_seconds, 10 * 60)
 
-        timer.remaining_seconds = 1
+        for _ in range((10 * 60) - 1):
+            phase = timer.tick()
+            self.assertIsNone(phase)
         phase = timer.tick()
         self.assertEqual(phase, "work")
         self.assertEqual(timer.remaining_seconds, 15 * 60)
@@ -57,7 +61,7 @@ class PomodoroTimerTest(unittest.TestCase):
         self.assertFalse(timer.should_play_sound("tick"))
 
 
-class ThemeTest(unittest.TestCase):
+class TestTheme(unittest.TestCase):
     def test_returns_theme_palette(self):
         palette = get_theme_palette("light")
         self.assertIn("background", palette)

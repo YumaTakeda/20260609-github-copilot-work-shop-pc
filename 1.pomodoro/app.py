@@ -51,7 +51,9 @@ class PomodoroTimer:
             "tick": self.settings.tick_sound_enabled,
         }
         if event_name not in options:
-            raise ValueError("event_name must be one of: start, end, tick")
+            raise ValueError(
+                f"event_name must be one of: start, end, tick, got {event_name}"
+            )
         return options[event_name]
 
     def tick(self) -> str | None:
@@ -122,9 +124,10 @@ def main() -> None:
     for _ in range(args.demo_ticks):
         timer.tick()
 
-    print(
-        f"  phase={timer.phase}, remaining_seconds={timer.remaining_seconds}"
-    )
+    if args.demo_ticks > 0:
+        print(
+            f"  phase={timer.phase}, remaining_seconds={timer.remaining_seconds}"
+        )
 
 
 if __name__ == "__main__":
